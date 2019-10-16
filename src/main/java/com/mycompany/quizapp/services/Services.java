@@ -40,9 +40,9 @@ public class Services {
     PasswordHash hasher;
     
     @GET
-    @Path("getallquiz")
+    @Path("getallpublicquiz")
     public List<Quiz> getAllQuiz() {
-        return em.createQuery("SELECT q FROM Quiz q ORDER BY q.name DESC").getResultList();
+        return em.createQuery("SELECT q FROM PublicQuiz q ORDER BY q.name DESC").getResultList();
     }
     
     @GET
@@ -169,7 +169,7 @@ public class Services {
     @GET
     @Path("getallusers")
     public List<User> getAllUsers() {
-        return em.createQuery("SELECT u FROM auser u ORDER BY u.userid DESC").getResultList();
+        return em.createQuery("SELECT u FROM User u ORDER BY u.userid DESC").getResultList();
     }
     
 }
