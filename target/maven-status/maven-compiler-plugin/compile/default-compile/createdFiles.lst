@@ -1,0 +1,6 @@
+com\mycompany\quizapp\services\Services.class
+com\mycompany\quizapp\domain\Question.class
+com\mycompany\quizapp\domain\Quiz.class
+com\mycompany\quizapp\configuration\DatasourceProducer.class
+com\mycompany\quizapp\configuration\JAXRSConfiguration.class
+com\mycompany\quizapp\domain\User.class
