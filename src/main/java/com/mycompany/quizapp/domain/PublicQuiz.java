@@ -4,34 +4,34 @@
  * and open the template in the editor.
  */
 package com.mycompany.quizapp.domain;
+
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * A user of the system. Bound to the authentication system
- *
- * @author Asbjørn
- */
-/**
  *
  * @author geeky
  */
-@Entity @Data @AllArgsConstructor
-@NoArgsConstructor
-public class Question implements Serializable {
+@Entity @Data @NoArgsConstructor
+@AllArgsConstructor
+public class PublicQuiz implements Serializable {
     
     @Id
-    String question;
-    String answer;
+    String name;
     
     
+    @OneToMany
+    List<Question> questions;
     
-    
+    public void addQuestion(Question question) {
+        questions.add(question);
+    }
     
 }

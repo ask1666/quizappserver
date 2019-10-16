@@ -108,7 +108,6 @@ public class Services {
             q = new Question();
             q.setQuestion(question);
             q.setAnswer(answer);
-            q.setQuiz(em.find(Quiz.class, quizName));
             em.persist(q);
             quiz.addQuestion(q);
             em.persist(quiz);

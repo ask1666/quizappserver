@@ -26,8 +26,6 @@ public class Quiz implements Serializable {
     @Id
     String name;
     
-    @ManyToOne
-    User auser;
     
     @OneToMany
     List<Question> questions;
