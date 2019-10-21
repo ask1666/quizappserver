@@ -28,8 +28,9 @@ public class Question implements Serializable {
     
     @Id
     String question;
-    String answer;
-    
+    String rightAnswer;
+    String answer2;
+    String answer3;
     
     
     

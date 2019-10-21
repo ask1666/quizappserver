@@ -7,6 +7,7 @@ package com.mycompany.quizapp.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -26,8 +27,9 @@ public class Quiz implements Serializable {
     @Id
     String name;
     
+    String userid;
     
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE) 
     List<Question> questions;
     
     public void addQuestion(Question question) {

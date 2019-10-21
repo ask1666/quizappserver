@@ -23,14 +23,11 @@ import lombok.NoArgsConstructor;
 @Data @AllArgsConstructor @NoArgsConstructor
 public class User implements Serializable {
 
-    @OneToMany
-    List<Quiz> quizs;
+    
     
     @Id
     String userid;
     String password;
     
-    public void addQuiz(Quiz quiz) {
-        quizs.add(quiz);
-    }
+    
 }

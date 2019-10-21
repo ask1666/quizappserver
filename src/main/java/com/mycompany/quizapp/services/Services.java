@@ -40,17 +40,12 @@ public class Services {
     PasswordHash hasher;
     
     @GET
-    @Path("getallpublicquiz")
+    @Path("getallquiz")
     public List<Quiz> getAllQuiz() {
-        return em.createQuery("SELECT q FROM PublicQuiz q ORDER BY q.name DESC").getResultList();
+        return em.createQuery("SELECT q FROM Quiz q ORDER BY q.name DESC").getResultList();
     }
     
-    @GET
-    @Path("getallquizfromuser")
-    public List<Quiz> getAllQuiz(@QueryParam("userid") String userid) {
-        User user = em.find(User.class, userid);
-        return user.getQuizs();
-    }
+    
     
     @GET
     @Path("getallquestionsfromquiz")
@@ -85,9 +80,8 @@ public class Services {
         } else {
             quiz = new Quiz();
             quiz.setName(name);
-            em.persist(name);
-            user.addQuiz(quiz);
-            em.persist(user);
+            quiz.setUserid(username);
+            em.persist(quiz);
             return Response.ok(quiz).build();
             
         }
@@ -95,7 +89,10 @@ public class Services {
     
     @GET
     @Path("createquestion")
-    public Response createQuestion(@QueryParam("question") String question, @QueryParam("answer") String answer, @QueryParam("quiz") String quizName) {
+    public Response createQuestion(@QueryParam("question") String question, 
+            @QueryParam("rightAnswer") String rightAnswer,@QueryParam("answer2") String answer2,
+            @QueryParam("answer3") String answer3, @QueryParam("quiz") String quizName) {
+        
         Question q = em.find(Question.class, question);
         Quiz quiz = em.find(Quiz.class, quizName);
         if (q != null) {
@@ -107,7 +104,9 @@ public class Services {
         } else {
             q = new Question();
             q.setQuestion(question);
-            q.setAnswer(answer);
+            q.setRightAnswer(rightAnswer);
+            q.setAnswer2(answer2);
+            q.setAnswer3(answer3);
             em.persist(q);
             quiz.addQuestion(q);
             em.persist(quiz);
@@ -157,7 +156,7 @@ public class Services {
         if (user == null) {
             log.log(Level.INFO, "User with that username dont exists", userid);
             return Response.status(Response.Status.BAD_REQUEST).build();
-        } else if (user.getPassword().equals(hasher.generate(password.toCharArray()))) {
+        } else if (hasher.verify(password.toCharArray(), user.getPassword())) {
             return Response.ok(user).build();
             
         } else {
