@@ -93,25 +93,44 @@ public class Services {
             @QueryParam("rightAnswer") String rightAnswer,@QueryParam("answer2") String answer2,
             @QueryParam("answer3") String answer3, @QueryParam("quiz") String quizName) {
         
-        Question q = em.find(Question.class, question);
+        Response response = Response.status(Response.Status.BAD_REQUEST).build();
         Quiz quiz = em.find(Quiz.class, quizName);
-        if (q != null) {
-            log.log(Level.INFO, "question already exists", question);
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        } else if (quiz == null) {
+        Question q = new Question();
+        q.setQuestion(question);
+        q.setRightAnswer(rightAnswer);
+        q.setAnswer2(answer2);
+        q.setAnswer3(answer3);
+        List<Question> questions = quiz.getQuestions();
+         if (quiz == null) {
             log.log(Level.INFO, "quiz doesnt exist", quizName);
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        } else {
-            q = new Question();
-            q.setQuestion(question);
-            q.setRightAnswer(rightAnswer);
-            q.setAnswer2(answer2);
-            q.setAnswer3(answer3);
+            response = Response.status(Response.Status.BAD_REQUEST).build();
+        } else if (questions.isEmpty()) {
             em.persist(q);
             quiz.addQuestion(q);
             em.persist(quiz);
-            return Response.ok(q).build();
+            response = Response.ok(q).build();
+        } else if (!questions.isEmpty()) {
+            
+            boolean questionExist = true;
+            for (int i = 0; i < questions.size(); i++) {
+                if (questions.get(i) == q) {
+                    questionExist = true;
+                } else {
+                    questionExist = false;
+                }
+            }
+            if (questionExist) {
+                log.log(Level.INFO, "question already exists", question);
+            response = Response.status(Response.Status.BAD_REQUEST).build();
+            } else {
+            em.persist(q);
+            quiz.addQuestion(q);
+            em.persist(quiz);
+            response = Response.ok(q).build();
+            }
+            
         }
+        return response;
     }
     
     @GET
