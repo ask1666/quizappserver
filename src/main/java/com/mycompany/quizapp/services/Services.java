@@ -143,11 +143,17 @@ public class Services {
     @Path("deletequestion")
     public Response deleteQuestion(@QueryParam("question") String question, @QueryParam("quiz") String quizName) {
         Question q = em.find(Question.class, question);
+        Quiz quiz = em.find(Quiz.class, quizName);
         if (q == null) {
-            log.log(Level.INFO, "question does not exist", question);
+            log.log(Level.INFO, "Question does not exist", question);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        } else if (quiz == null) {
+            log.log(Level.INFO, "Quiz", quiz);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {
+            quiz.removeQuestion(q);
             em.remove(q);
+            em.persist(quiz);
             return Response.ok(q).build();
         }
     }

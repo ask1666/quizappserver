@@ -36,4 +36,8 @@ public class Quiz implements Serializable {
         questions.add(question);
     }
     
+    public void removeQuestion(Question question) {
+        questions.remove(question);
+    }
+    
 }
